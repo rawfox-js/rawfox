@@ -1,0 +1,31 @@
+{
+  "name": "rawfox",
+  "version": "1.0.0",
+  "description": "CLI for rawfox",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc\n rollup --config rollup.config.mjs"
+  },
+  "bin": {
+    "rawfox": "./dist/index.js"
+  },
+  "keywords": [
+    "CLI",
+    "rawfox",
+    "fox"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "cac": "^6.7.14",
+    "events": "^3.3.0",
+    "prompts": "^2.4.2",
+    "rollup": "^4.44.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.8",
+    "@types/prompts": "^2.4.9"
+  }
+}

@@ -1,0 +1,5 @@
+docs/
+rollup.config.mjs
+tsconfig.json
+src/
+node_modules/
