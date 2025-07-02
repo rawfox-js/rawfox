@@ -2,6 +2,7 @@ import { setCommands } from "../core/core"
 import fs from 'fs'
 import prompts from "prompts"
 import type { PromptObject } from "prompts"
+import chalk from "chalk"
 //要询问用户的内容
 const promptsOption: PromptObject<string>[] = [
     {
@@ -9,12 +10,31 @@ const promptsOption: PromptObject<string>[] = [
         name: "declaration",
         message: "是否生成类型声明文件？",
         initial: false
+    },
+    {
+        type: "select",
+        name: "mode",
+        message: "以哪种模式打包？",
+        choices:[
+            {
+                title: "Web Component API",
+                description: "基于Web Component API生成文件（基于Shadow DOM API）",
+                value: "webComponent",
+            },
+            {
+                title: "DOM Nesting",
+                description: "原生DOM嵌套模式（会生成CSS文件来支持）",
+                value: "DOMNest"
+            }
+        ],
+        initial: 1
     }
 ]
 //配置文件的默认内容
 const configFile = `export default {
     input: "./src/",
     output: "./dist/",
+    mode: __mode__
     outputOptions: {
         declarationFile: __declaration__,
     }
@@ -23,10 +43,12 @@ const configFile = `export default {
 type ConfigRules = {
     [name: string]: any
     declaration: boolean
+    mode: "DOMNest" | "webComponent"
 }
 //生成的配置文件的替换规则
 const configRules: ConfigRules = {
-    declaration: false //默认不生成类型声明文件
+    declaration: false, //默认不生成类型声明文件
+    mode: "webComponent"
 }
 //配置项会替换配置文件中的 __键__ 为对应值
 function setConfigFile(config: {
@@ -60,7 +82,8 @@ setCommands({
     async action(_name, options) {
         try {
             fs.accessSync("rawfox.config.js")
-            console.log("rawfox.config.js文件已存在。")
+            console.log(chalk.bgRed.italic.white("rawfox.config.js文件已存在。"))
+            console.log(chalk.green.bold("请删除rawfox.config.js或重命名后重试。"))
         } catch {
             //询问用户相关配置
             let res
@@ -123,7 +146,7 @@ setCommands({
                     }
                 </style>`)
             }
-            console.log("项目初始化完成")
+            console.log(chalk.bold.white.bgGreen("项目初始化完成"))
         }
     }
 })
