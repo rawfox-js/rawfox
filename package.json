@@ -1,0 +1,22 @@
+{
+  "name": "rawfox",
+  "version": "1.0.0",
+  "description": "响应式、声明式UI开发框架",
+  "main": "./dist/main.js",
+  "scripts": {
+    "build": "tsc\n node esbuild.config.mjs",
+    "dev": "vite"
+  },
+  "keywords": [
+    "ui",
+    "framework"
+  ],
+  "repository": "rawfox-js/rawfox",
+  "author": "Micropue",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "esbuild": "0.28.0",
+    "vite": "^8.0.8"
+  }
+}
