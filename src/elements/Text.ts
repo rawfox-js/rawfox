@@ -1,4 +1,5 @@
-import type { RNode } from '../core/build-app'
+import type { RNode } from "../core/rnode";
+
 export function Text(text: string): RNode {
     return {
         type: "text",
