@@ -5,15 +5,17 @@
 ```js
 App(
 	Text("Hello World"),
-  	Flex(
-  		H1("This is the head"),
-  		Button({
-  			onClick(){
-  				const xhr = new XMLHttpRequest()
-  			}
-    	})
-  	)
+  	P(
+        Text("网站标题"),
+        Br().class("divider"),
+        Text("—— 一个很牛的介绍"),
+    )
+    .class("header")
+    .style("font-size", "24px")
+    .style("font-weight", "bold")
+    .style("padding", "16px")
+    .attr("data-role", "header"),
 )
 ```
 
-类似 `Flutter`原生开发体验。
+声明式、响应式前端开发框架
