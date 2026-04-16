@@ -1,5 +1,7 @@
 # RawFox JS
 
+<img src="https://img.shields.io/badge/Light-green"/> <img src="https://img.shields.io/badge/0 Dependencies-orange"/> <img src="https://img.shields.io/badge/Fast-red"/>
+
 ## 简洁、易读
 
 无依赖，无侵入，支持无`css`构建。
@@ -25,10 +27,64 @@ App(
 **ES Modules**
 
 ```js
-import BuildApp from ''
+import { BuildApp, Text, P, Br } from 'rawfox'
+const App = BuildApp({
+    mount: "#app"
+})
+
+App(
+    P(
+        Text("Hello World"),
+        Br(),
+        Text("This is RawFox."),
+        Br(),
+        Text("Follow us from GitHub!")
+    )
+    .style("font-size", "2em")
+    .style("background", "linear-gradient(to right, red, blue)")
+    .style("background-clip", "text")
+    .style("color", "transparent")
+    .style("font-weight", "100")
+)
 ```
 
+推荐使用`Vite`构建RawFox项目
 
+**浏览器**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/rawfox.js"></script> <!--导入RawFox IIFE版本-->
+</head>
+<body>
+    <script>
+        const { BuildApp, Text, P, Br } = rawfox
+        const App = BuildApp({
+            mount: "body"
+        })
+        App(
+            P(
+                Text("Hello World"),
+                Br(),
+                Text("This is RawFox."),
+                Br(),
+                Text("Follow us from GitHub!")
+            )
+            .style("font-size", "2em")
+            .style("background", "linear-gradient(to right, red, blue)")
+            .style("background-clip", "text")
+            .style("color", "transparent")
+            .style("font-weight", "100")
+        )
+  	</script>
+</body>
+</html>
+```
 
 
 
