@@ -1,6 +1,6 @@
 {
   "name": "rawfox",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A lightweight, declarative, and responsive front-end development framework with no dependencies.",
   "main": "./dist/main.js",
   "scripts": {
