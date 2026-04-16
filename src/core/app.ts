@@ -16,7 +16,7 @@ export function BuildApp(config: BuildAppConfig) {
     const mountElement = document.querySelector(config.mount)
     if (!mountElement)
         throw new TypeError("Cannot find the element you have mounted.")
-    return new App(mountElement)
+    return new App(mountElement).app()
 }
 
 /**
