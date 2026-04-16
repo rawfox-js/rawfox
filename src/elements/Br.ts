@@ -1,6 +1,6 @@
-import { BuildRNode, type RNode } from "../core/rnode";
+import { BuildRNode } from "../core/rnode";
 import { injectProperties } from "../module/properties";
 
-export function Br(): RNode {
+export function Br() {
     return injectProperties.apply(BuildRNode("element", undefined, "br"), [{}])
 }
