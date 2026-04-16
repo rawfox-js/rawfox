@@ -6,7 +6,7 @@
 
 ```js
 App(
-		Text("Hello World"),
+	Text("Hello World"),
   	P(
         Text("网站标题"),
         Br().class("divider"),
