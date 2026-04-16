@@ -1,9 +1,16 @@
 import { render } from './renderer'
 import type { RNode } from './rnode'
+/**
+ * 基础构建配置
+ */
 export interface BuildAppConfig {
     mount: string //绑定的根元素选择器
 }
-
+/**
+ * 构建器
+ * @param config 配置选项
+ * @returns 根元素
+ */
 export function BuildApp(config: BuildAppConfig) {
     if (typeof config !== 'object') throw new TypeError("The buildApp function is configured incorrectly.")
     const mountElement = document.querySelector(config.mount)
@@ -12,7 +19,11 @@ export function BuildApp(config: BuildAppConfig) {
     return new App(mountElement)
 }
 
-
+/**
+ * 将根节点绑定到元素上
+ * @param mountedElement 被绑定元素
+ * @param rnode RNode节点
+ */
 export function mount(mountedElement: Element, rnode: RNode | RNode[]) {
     if (Array.isArray(rnode)) {
         rnode.forEach(rn => {
@@ -22,7 +33,9 @@ export function mount(mountedElement: Element, rnode: RNode | RNode[]) {
         mountedElement.append(render(rnode))
     }
 }
-
+/**
+ * 根组件
+ */
 export class App {
     constructor(mountElement: Element) {
         return function (...args: RNode[]) {

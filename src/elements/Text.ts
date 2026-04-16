@@ -1,8 +1,5 @@
-import type { RNode } from "../core/rnode";
+import { BuildRNode, type RNode } from "../core/rnode";
 
 export function Text(text: string): RNode {
-    return {
-        type: "text",
-        inner: text
-    }
+    return BuildRNode("text", text)
 }

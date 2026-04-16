@@ -1,10 +1,12 @@
 # RawFox JS
 
-无依赖性、无侵入性的前端开发框架
+## 简洁、易读
+
+无依赖，无侵入，支持无`css`构建。
 
 ```js
 App(
-	Text("Hello World"),
+		Text("Hello World"),
   	P(
         Text("网站标题"),
         Br().class("divider"),
@@ -18,4 +20,5 @@ App(
 )
 ```
 
-声明式、响应式前端开发框架
+## 框架原理
+

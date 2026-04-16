@@ -7,6 +7,10 @@
     "build": "tsc\n node esbuild.config.mjs",
     "dev": "vite"
   },
+  "exports": {
+    "core/*": "./dist/core/*.js",
+    "elements/*": "./dist/elements/*.js"
+  },
   "keywords": [
     "ui",
     "framework"
