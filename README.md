@@ -20,6 +20,18 @@ App(
 )
 ```
 
+## 使用方法
+
+**ES Modules**
+
+```js
+import BuildApp from ''
+```
+
+
+
+
+
 ## 框架原理
 
 ### 核心运行流程

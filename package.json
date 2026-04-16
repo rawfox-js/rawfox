@@ -1,15 +1,16 @@
 {
   "name": "rawfox",
-  "version": "1.0.0",
-  "description": "响应式、声明式UI开发框架",
+  "version": "0.1.3",
+  "description": "无依赖的响应式、声明式前端开发框架",
   "main": "./dist/main.js",
   "scripts": {
     "build": "tsc\n node esbuild.config.mjs",
     "dev": "vite"
   },
   "exports": {
-    "core/*": "./dist/core/*.js",
-    "elements/*": "./dist/elements/*.js"
+    ".": "./dist/main.js",
+    "./core/*": "./dist/core/*.js",
+    "./elements/*": "./dist/elements/*.js"
   },
   "keywords": [
     "ui",

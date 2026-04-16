@@ -37,10 +37,13 @@ export function mount(mountedElement: Element, rnode: RNode | RNode[]) {
  * 根组件
  */
 export class App {
+    mountElement: Element | null = null
     constructor(mountElement: Element) {
-        return function (...args: RNode[]) {
-            mount(mountElement, args)
+        this.mountElement = mountElement
+    }
+    app() {
+        return  (...args: RNode[]) => {
+            mount(this.mountElement as HTMLElement, args)
         }
     }
 }
-
