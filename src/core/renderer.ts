@@ -1,4 +1,5 @@
 import type { AttrList, CommentNode, ElementNode, EventList, RNode, StyleList, TextNode } from "./rnode"
+import { convertCSSPropertyName } from "./tools"
 /**
  * 文本类型RNode渲染器
  * @param rnode 文本类型RNode节点
@@ -34,14 +35,29 @@ export function eventListInsert(ele: HTMLElement, eventList: EventList): void {
  * @param ele 元素
  * @param styleList 样式列表
  */
-export function styleListInsert(ele: HTMLElement, styleList: StyleList): void {
-    Object.keys(styleList).forEach(property => {
-        (ele.style as {
-            [k: string]: any
-        })[property] = styleList[property]
-    })
+export function styleListInsert(rnodeID: string,  styleList: StyleList): void {
+    // 寻找是否存在样式表style标签
+    const style = document.querySelectorAll("style")
+    let insertStyleElement: HTMLStyleElement
+    if (style.length) //直接插入到最后一个style标签内
+        insertStyleElement = style[style.length - 1] as HTMLStyleElement
+    else {
+        const newStyleEle = document.createElement("style")
+        insertStyleElement = newStyleEle
+        document.head.append(newStyleEle)
+    }
+    insertStyleElement.innerHTML += `[data-rf-${rnodeID}]{` + Object.keys(styleList).map(property => {
+        return `${convertCSSPropertyName(property)}: ${styleList[property]};`
+    }).join(" ") + "}\n"
 }
-
+/**
+ * 为元素插入唯一标识符
+ * @param ele 元素
+ * @param id 唯一ID
+ */
+export function rnodeIDInsert(ele: HTMLElement, id: string): void {
+    ele.setAttribute(`data-rf-${id}`, "")
+}
 /**
  * 元素类型RNode渲染器
  * @param rnode Element类型RNode节点
@@ -50,8 +66,9 @@ export function styleListInsert(ele: HTMLElement, styleList: StyleList): void {
 export function elementRender(rnode: ElementNode): Node {
     const ele = document.createElement(rnode.name)
     if (rnode.attrList) attrListInsert(ele, rnode.attrList)
-    if (rnode.styleList) styleListInsert(ele, rnode.styleList)
+    if (Object.keys(rnode.styleList).length) styleListInsert(rnode.id, rnode.styleList)
     if (rnode.eventList) eventListInsert(ele, rnode.eventList)
+    rnodeIDInsert(ele, rnode.id)
     if (!rnode.inner) return ele
     if (Array.isArray(rnode.inner)) {
         rnode.inner.forEach(rn => {

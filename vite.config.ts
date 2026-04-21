@@ -10,8 +10,15 @@ export default defineConfig({
             return {
                 name: "dev-watcher",
                 configureServer() {
-                    chokidar.watch("./src").on("change", () => {
-                        exec("npm run build").on("close", ()=>{
+                    chokidar.watch("./src").on("change", (e) => {
+                        if(e === 'src/main.ts') return
+                        // 读取element目录下的所有文件
+                        const files = fs.readdirSync("./src/elements")
+                        let result = files.map(i => `export * from './elements/${i.replace(/\.ts/, "")}'`).join("\n")
+                        const start = `export * from './core/app'\n`
+                        result = start + result
+                        fs.writeFileSync("./src/main.ts", result)
+                        exec("npm run build").on("close", () => {
                             fs.copyFileSync("./dist/rawfox.js", "./test/js/rawfox.js")
                         })
                     })

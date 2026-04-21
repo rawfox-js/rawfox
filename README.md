@@ -29,7 +29,10 @@ App(
 ```js
 import { BuildApp, Text, P, Br } from 'rawfox'
 const App = BuildApp({
-    mount: "#app"
+    mount: "#app",
+  	globalStyle: {
+       //全局样式注入
+    }
 })
 
 App(
@@ -86,7 +89,18 @@ App(
 </html>
 ```
 
+## 自定义组件
 
+```js
+export function P(...args: RNode[]) { // 嵌套组件
+    //写入你的特殊代码
+    return BuildRNode("element", args, "p").injectProperties({ //通过BuildRNode函数返回组件实例
+      a(){
+        //特殊方法，为组件定制方法
+      }
+    }) 
+}
+```
 
 ## 框架原理
 

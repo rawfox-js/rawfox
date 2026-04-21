@@ -8,11 +8,22 @@ export type FullPropertiesNode<Expand> = RNode & Methods<Expand> & Expand
  */
 export type Eventhandler = (e: Event) => void
 /**
+ * 样式表
+ */
+
+export type StyleSheet = {
+    [x in keyof CSSStyleDeclaration]?: CSSStyleDeclaration[x];
+} & {
+    [selector: string]: string | number | StyleSheet
+};
+/**
  * 链式方法，元素RNode节点类型的基础方法。
  */
 export interface Methods<Expand> {
     class: (classNames: string) => FullPropertiesNode<Expand>
-    style: (property: string, value: string) => FullPropertiesNode<Expand>
+    setStyle: (property: string, value: string) => FullPropertiesNode<Expand>
+    setStyleSheet: (styleSheet: StyleSheet) => FullPropertiesNode<Expand>
+    style: (arg1: string | StyleSheet, arg2?: string) => FullPropertiesNode<Expand>
     attr: (name: string, value: any) => FullPropertiesNode<Expand>
     click: (fn: (e: PointerEvent) => void) => FullPropertiesNode<Expand>
     on: (event: keyof HTMLElementEventMap, handler: Eventhandler) => FullPropertiesNode<Expand>
@@ -23,9 +34,7 @@ export interface Methods<Expand> {
  * @param expand 扩展方法，可为元素定制链式调用方法。
  * @returns 已完整注入链式调用属性的RNode节点类型
  */
-export function injectProperties<Expand extends {
-    [K: string]: (...args: any[]) => RNode & Methods<Expand>
-}>(this: ElementNode, expand: Expand): FullPropertiesNode<Expand> {
+export function injectProperties<Expand extends Record<string, (...args: any[]) => any>>(this: ElementNode, expand?: Expand): FullPropertiesNode<Expand> & Expand {
     return {
         ...this,
         ...expand,
@@ -38,12 +47,36 @@ export function injectProperties<Expand extends {
             return this
         },
         /**
-         * 样式设置，将直接设置到style属性上
-         * @param property css属性
-         * @param value 属性值
+         * 直接设置样式，一次只能设置一条。（适合少量样式）
+         * @param property 样式名称
+         * @param value 值
          */
-        style(property: string, value: string) {
+        setStyle(property, value){
             this.styleList[property] = value
+            return this
+        },
+        /**
+         * 设置样式表，包含类型提示
+         * @param styleSheet 样式表
+         */
+        setStyleSheet(styleSheet){
+            Object.keys(styleSheet).forEach(key => {
+                this.styleList[key] = styleSheet[key]
+            })
+            return this
+        },
+        /**
+         * 样式设置，支持两种写法：键值对写法/对象样式表写法
+         * @param arg1 样式或对象样式表
+         * @param arg2 样式值
+         */
+        style(arg1: string | StyleSheet, arg2?: string) {
+            if (typeof arg1 === 'string') {
+                if(!arg2) throw new TypeError("When using the `style` method, the first parameter is a string, and the second parameter must be present.")
+                this.setStyle(arg1, arg2)
+                return this
+            }
+            this.setStyleSheet(arg1)
             return this
         },
         /**

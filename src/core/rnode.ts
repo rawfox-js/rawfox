@@ -13,6 +13,8 @@ export type RNodeType<T extends RNodeBaseType> = T
 export interface BaseNode<Type extends RNodeBaseType> {
     [key: string]: any
     type: Type
+    id: string //每个元素的唯一ID
+    injectProperties: typeof injectProperties // 注入链
 }
 /**
  * 文本节点
@@ -56,6 +58,14 @@ export interface CommentNode extends BaseNode<"comment"> {
  */
 export type RNode = TextNode | ElementNode | CommentNode
 /**
+ * 生成元素唯一ID
+ */
+export function generateRNodeID() {
+    const random = new Date().getTime() + Number((Math.random() * (10 ** 13)).toFixed(0))
+    const sliceRandom = Number((Math.random() * 6).toFixed(0))
+    return random.toString(16).slice(sliceRandom,sliceRandom + 6)
+}
+/**
  * 创建文本RNode节点
  * @param type 节点类型
  * @param inner 文本
@@ -80,6 +90,8 @@ export function BuildRNode(type: RNodeBaseType, inner: string | RNode | RNode[] 
             return {
                 type: "text",
                 inner: inner as string,
+                id: generateRNodeID(),
+                injectProperties,
             }
         case "element":
             return {
@@ -88,12 +100,16 @@ export function BuildRNode(type: RNodeBaseType, inner: string | RNode | RNode[] 
                 name: name as string,
                 attrList: {},
                 styleList: {},
-                eventList: {}
+                eventList: {},
+                id: generateRNodeID(),
+                injectProperties,
             }
         case "comment":
             return {
                 type: "comment",
                 inner: inner as string,
+                id: generateRNodeID(),
+                injectProperties,
             }
     }
 }
